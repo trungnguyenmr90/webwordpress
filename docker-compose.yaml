@@ -1,0 +1,30 @@
+version: '3.3'
+volumes:          #define volume for docker
+  d-owncloud:
+  d-mariadb:
+services:
+  owncloud:
+    image: owncloud 
+    restart: always
+    container_name: c-owncloud
+    ports:
+      - 8080:80
+    volumes:
+      - d-owncloud:/var/www/html  
+    networks:
+      - owncloud-network
+
+  mariadb:
+    image: mariadb
+    restart: always
+    container_name: c-mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: a@1         
+    networks:
+      - owncloud-network
+    volumes:
+      - d-mariadb:/var/lib/mysql  
+
+networks:               #create docker network
+  owncloud-network: 
+    driver: bridge
