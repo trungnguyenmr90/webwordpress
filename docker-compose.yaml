@@ -31,7 +31,7 @@ services:              # create services
   mariadb:
     image: mariadb
     restart: always
-    container_name: c-mariadb
+    container_name: c-mariadb-wp
     
     environment:
       MYSQL_ROOT_PASSWORD: a@1
