@@ -29,5 +29,3 @@ services:
 networks:               #create docker network
   owncloud-network: 
     driver: bridge
-
-#testing gitpod
