@@ -1,31 +1,48 @@
-# this is testing gitpod-github
 version: '3.3'
-volumes:          #define volume for docker
-  d-owncloud:
-  d-mariadb:
-services:
-  owncloud:
-    image: nextcloud 
-    restart: always
-    container_name: c-nextcloud
-    ports:
-      - 8080:80
-    volumes:
-      - d-owncloud:/var/www/html  
-    networks:
-      - owncloud-network
+volumes:          #define volume
+  d-wp:
+  d-wp-db:
 
+networks:               #create  network
+  wordpress-network: 
+    driver: bridge
+
+services:              # create services
+  
+  wordpress:
+    image: wordpress
+    restart: always
+    container_name: c-wordpress
+    ports:
+      - 80:80
+    
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: a@1
+      WORDPRESS_DB_NAME: wordpress
+    
+    volumes:
+      - d-wp:/var/www/html  
+    
+    networks:
+      - wordpress-network
+#==========================================
   mariadb:
     image: mariadb
     restart: always
     container_name: c-mariadb
+    
     environment:
-      MYSQL_ROOT_PASSWORD: a@1         
-    networks:
-      - owncloud-network
+      MYSQL_ROOT_PASSWORD: a@1
+      MYSQL_PASSWORD: a@1
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress         
+    
     volumes:
-      - d-mariadb:/var/lib/mysql  
+      - d-wp-db:/var/lib/mysql  
+    
+    networks:
+      - wordpress-network
 
-networks:               #create docker network
-  owncloud-network: 
-    driver: bridge
+#end
